@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native'
-import yelp from '../api/yelp'
+import React, { useEffect } from 'react'
+import { Text, StyleSheet, FlatList, Image } from 'react-native'
+import useDetails from '../hooks/useDetails'
 
 // capture props.navigation from react-navigation-stack on App.js
 const DetailScreen = ({ navigation }) => {
-  const [detail, setDetail] = useState({})
+  const [detail, isLoading, getDetail] = useDetails()
 
   // get id object prop param from ResultsList.js navigation.navigate('Detail', { id: item.id })
   const id = navigation.getParam('id')
   //console.log(id)
 
-  // returns single object instead of array of objects
-  const getDetail = async (id) => {
-    const response = await yelp.get(`/${id}`)
-    if (response) {
-      setDetail(response.data)
-    }
-  }
-
   useEffect(() => {
     getDetail(id)
   }, [])
-  console.log(detail)
 
   // detail.photos contains url of photo
-  return (
+  return isLoading ? (
+    <Text style={styles.headerStyle}>loading...</Text>
+  ) : (
     <>
       <Text style={styles.headerStyle}>{detail.name}</Text>
       <Text style={styles.textStyle}>
@@ -38,6 +31,7 @@ const DetailScreen = ({ navigation }) => {
       <Text style={styles.textStyle}>{detail.phone}</Text>
       <Text style={styles.headerStyle}>Pictures</Text>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={detail.photos}
         keyExtractor={(photo) => photo}
         renderItem={({ item }) => (

@@ -3,7 +3,7 @@ import yelp from '../api/yelp'
 
 export default () => {
   const [results, setResults] = useState([])
-  const [status, setStatus] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
   const searchApi = async (search) => {
     try {
@@ -16,9 +16,9 @@ export default () => {
         },
       })
       setResults(response.data.businesses)
-      setStatus('')
+      setIsLoading(false)
     } catch (err) {
-      setStatus(err)
+      setIsLoading(true)
     }
   }
 
@@ -26,5 +26,5 @@ export default () => {
     searchApi('steak')
   }, [])
 
-  return [searchApi, results, status]
+  return [searchApi, results, isLoading]
 }
