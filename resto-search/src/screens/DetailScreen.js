@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Text, StyleSheet, FlatList, Image } from 'react-native'
+import { Text, StyleSheet, FlatList, Image, Linking } from 'react-native'
 import useDetails from '../hooks/useDetails'
 
 // capture props.navigation from react-navigation-stack on App.js
@@ -29,6 +29,12 @@ const DetailScreen = ({ navigation }) => {
         {detail.location.state}, {detail.location.zip_code}
       </Text>
       <Text style={styles.textStyle}>{detail.phone}</Text>
+      <Text
+        style={styles.linkStyle}
+        onPress={() => Linking.openURL(detail.url)}
+      >
+        Yelp
+      </Text>
       <Text style={styles.headerStyle}>Pictures</Text>
       <FlatList
         showsVerticalScrollIndicator={false}
@@ -60,6 +66,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 15,
     marginBottom: 5,
+  },
+  linkStyle: {
+    fontSize: 16,
+    marginLeft: 15,
+    marginBottom: 5,
+    color: 'blue',
   },
 })
 
