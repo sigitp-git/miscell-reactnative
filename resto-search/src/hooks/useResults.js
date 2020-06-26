@@ -23,7 +23,7 @@ export default () => {
   }
 
   useEffect(() => {
-    searchApi('plano')
+    searchApi('steak')
   }, [])
 
   return [searchApi, results, status]

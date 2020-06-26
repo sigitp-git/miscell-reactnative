@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import SearchBar from '../components/SearchBar'
 import useResults from '../hooks/useResults'
 import ResultsList from '../components/ResultsList'
@@ -14,26 +14,22 @@ const SearchScreen = () => {
     results.filter((result) => result.price === price)
 
   return (
-    <View>
+    // react wrapper (instead of View) is best practice for ScrollView parent
+    <>
       <SearchBar
         term={term}
         onTermChange={(newTerm) => setTerm(newTerm)}
         onTermSubmit={() => searchApi(term)}
       />
       {!!status ? <Text>Network error, try again later</Text> : null}
-      <Text style={styles.textStyle}>{results.length} results found</Text>
-      <ResultsList header='Save' results={filterByPrice('$')} />
-      <ResultsList header='Medium' results={filterByPrice('$$')} />
-      <ResultsList header='Lux' results={filterByPrice('$$$')} />
-      <ResultsList header='Lux+' results={filterByPrice('$$$$')} />
-    </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <ResultsList header='Deals' results={filterByPrice('$')} />
+        <ResultsList header='Enjoy' results={filterByPrice('$$')} />
+        <ResultsList header='Lux' results={filterByPrice('$$$')} />
+        <ResultsList header='Lux+' results={filterByPrice('$$$$')} />
+      </ScrollView>
+    </>
   )
 }
-
-const styles = StyleSheet.create({
-  textStyle: {
-    fontSize: 14,
-  },
-})
 
 export default SearchScreen

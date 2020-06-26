@@ -1,17 +1,39 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native'
+import ResultDetail from './ResultDetail'
+import { withNavigation } from 'react-navigation'
 
-const ResultsList = ({ header, results }) => {
+// props.navigation sent by CreateStackNavigator (react-navigation-stack) on App.js
+// skip parent to get props.navigation by wrapper withNavigation()
+const ResultsList = ({ header, results, navigation }) => {
+  // collaps section if no result
+  if (!results.length) {
+    return null
+  }
+
   return (
-    <View>
-      <Text style={styles.textStyle}>{header}</Text>
-      <Text>{results.length} results</Text>
+    <View style={styles.containerStyle}>
+      <Text style={styles.headerStyle}>{header}</Text>
       <FlatList
+        showsHorizontalScrollIndicator={false}
         horizontal
         data={results}
         keyExtractor={(result) => result.id}
         renderItem={({ item }) => {
-          return <Text>{item.name} </Text>
+          return (
+            // navigation params as second argument { id: item.id } passed to 'Detail' page
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Detail', { id: item.id })}
+            >
+              <ResultDetail result={item} />
+            </TouchableOpacity>
+          )
         }}
       />
     </View>
@@ -19,10 +41,17 @@ const ResultsList = ({ header, results }) => {
 }
 
 const styles = StyleSheet.create({
-  textStyle: {
+  containerStyle: {
+    marginBottom: 10,
+  },
+  headerStyle: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginLeft: 15,
+    marginBottom: 5,
   },
 })
 
-export default ResultsList
+// props.navigation sent by CreateStackNavigator (react-navigation-stack) on App.js
+// skip parent to get props.navigation by wrapper withNavigation()
+export default withNavigation(ResultsList)
