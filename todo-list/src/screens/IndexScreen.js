@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, FlatList, Button } from 'react-native'
 import { Context } from '../context/Context'
 
 const IndexScreen = () => {
-  const { state, addTodo } = useContext(Context)
+  const { state, dispatch } = useContext(Context)
   return (
     <>
       <Text style={styles.textStyle}>Index Screen</Text>
-      <Button title='Add Todo' onPress={() => addTodo()} />
+      <Button title='Add Todo' onPress={() => dispatch({ type: 'CREATE' })} />
       <FlatList
         data={state}
         keyExtractor={(todo) => todo.title}

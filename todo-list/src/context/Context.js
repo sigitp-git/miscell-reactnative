@@ -1,6 +1,6 @@
 import createDataContext from './createDataContext'
 
-const reducer = (state, action) => {
+const todoReducer = (state, action) => {
   switch (action.type) {
     case 'CREATE':
       return [...state, { title: `Todo ${state.length + 1}` }]
@@ -9,11 +9,7 @@ const reducer = (state, action) => {
   }
 }
 
-const addTodo = (dispatch) => {
-  return () => {
-    dispatch({ type: 'CREATE' })
-  }
-}
-
 // in App.js, <App /> is the children props
-export const { Context, Provider } = createDataContext(reducer, { addTodo }, [])
+const { Context, Provider } = createDataContext(todoReducer, [])
+
+export { Context, Provider }
